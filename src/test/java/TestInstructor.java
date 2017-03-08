@@ -27,6 +27,15 @@ public class TestInstructor {
         this.student = new Student();
     }
 
+    /* Homework cannot be assigned in the past */
+    @Test
+    public void testHomeworkYear() {
+        this.admin.createClass("Test", 2015, "Instructor", 15);
+        this.instructor.addHomework("Instructor", "Test", 2015,
+                "Homework1", "First homework assignment");
+        assertFalse(this.instructor.homeworkExists("Test", 2015, "Homework1"));
+    }
+
     /* The homework must be assigned */
     @Test
     public void testHomeworkAssigned() {

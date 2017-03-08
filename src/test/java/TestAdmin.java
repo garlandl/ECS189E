@@ -99,7 +99,7 @@ public class TestAdmin {
         this.student1.registerForClass("Student1", "Test", 2017);
         this.student2.registerForClass("Student2", "Test", 2017);
 
-        /* Should set capacity to two */
+        /* Should set capacity to five */
         this.admin.changeCapacity("Test", 2017, 5);
         assertTrue(this.admin.getClassCapacity("Test", 2017) == 5);
     }
