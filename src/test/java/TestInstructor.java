@@ -27,14 +27,6 @@ public class TestInstructor {
         this.student = new Student();
     }
 
-    /* Check that the instructor/class pair exists (className & year) */
-    @Test
-    public void testInstructorClassPair() {
-        this.admin.createClass("Test", 2017, "Instructor", 15);
-        /* getClassInstructor should return the instruct name as a String */
-        assertEquals(this.admin.getClassInstructor("Test", 2017), "Instructor");
-    }
-
     /* The homework must be assigned */
     @Test
     public void testHomeworkAssigned() {

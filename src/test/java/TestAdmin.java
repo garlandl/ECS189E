@@ -5,6 +5,7 @@ import api.core.impl.Student;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -22,6 +23,14 @@ public class TestAdmin {
         this.admin = new Admin();
         this.student1 = new Student();
         this.student2 = new Student();
+    }
+
+    /* Check that the instructor/class pair exists (className & year) */
+    @Test
+    public void testInstructorClassPair() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        /* getClassInstructor should return the instruct name as a String */
+        assertEquals(this.admin.getClassInstructor("Test", 2017), "Instructor");
     }
 
     /* A class this year should be valid */

@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Vincent on 23/2/2017.
  */
-public class TestExample {
+public class TestStudent {
 
     private IAdmin admin;
 
@@ -21,11 +21,5 @@ public class TestExample {
     public void testMakeClass() {
         this.admin.createClass("Test", 2017, "Instructor", 15);
         assertTrue(this.admin.classExists("Test", 2017));
-    }
-
-    @Test
-    public void testMakeClass2() {
-        this.admin.createClass("Test", 2016, "Instructor", 15);
-        assertFalse(this.admin.classExists("Test", 2016));
     }
 }
