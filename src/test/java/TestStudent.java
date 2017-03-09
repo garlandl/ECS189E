@@ -139,4 +139,16 @@ public class TestStudent {
                 "Test", 2017);
         assertFalse(this.student1.hasSubmitted("Student1", "Homework1", "Test", 2017));
     }
+
+    /* Fail if class is taught in the future */
+    @Test
+    public void testSubmitHomework5() {
+        this.admin.createClass("Test", 2018, "Instructor", 5);
+        this.instructor.addHomework("Instructor", "Test", 2018,
+                "Homework1", "First homework assignment");
+        this.student1.registerForClass("Student1", "Test", 2018);
+        this.student1.submitHomework("Student1", "Homework1", "Answer to HW1",
+                "Test", 2018);
+        assertFalse(this.student1.hasSubmitted("Student1", "Homework1", "Test", 2018));
+    }
 }
