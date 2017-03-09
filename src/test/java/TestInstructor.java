@@ -148,6 +148,38 @@ public class TestInstructor {
         assertTrue(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 110);
     }
 
+    /* Change grade from valid value to another valid value */
+    @Test
+    public void testChangeGrade() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student.registerForClass("Student1", "Test", 2017);
+        this.student.submitHomework("Student1","Homework1", "Answer to homework1",
+                "Test", 2017);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student1", 110);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student1", 100);
+        assertTrue(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 100);
+    }
+
+    /* Change grade from valid value to invalid value (Should FAIL)*/
+    @Test
+    public void testChangeGrade2() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student.registerForClass("Student1", "Test", 2017);
+        this.student.submitHomework("Student1","Homework1", "Answer to homework1",
+                "Test", 2017);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student1", 110);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student1", -10);
+        assertFalse(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == -10);
+    }
+
     /* Cannot assign grade to not registered student */
     @Test
     public void testMissingAssignGrade() {
