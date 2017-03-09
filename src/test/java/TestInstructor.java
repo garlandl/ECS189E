@@ -54,6 +54,14 @@ public class TestInstructor {
         assertFalse(this.instructor.homeworkExists("Test2", 2020, "Homework2"));
     }
 
+    /* Homework should not be created for a non-existing class */
+    @Test
+    public void testHomeworkAssigned3() {
+        this.instructor.addHomework("Instructor", "Test3", 2017,
+                "Homework1", "First homework assignment");
+        assertFalse(this.instructor.homeworkExists("Test3", 2017, "Homework1"));
+    }
+
     /* Test all three constraints */
     @Test
     public void testHomeworkConstraints() {
@@ -93,7 +101,6 @@ public class TestInstructor {
         this.student.registerForClass("Student1", "Test", 2017);
         this.student.submitHomework("Student1","Homework1", "Answer to homework1",
                 "Test", 2017);
-
         this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
                 "Student1", -1);
         assertFalse(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") < 0);
@@ -108,7 +115,6 @@ public class TestInstructor {
         this.student.registerForClass("Student1", "Test", 2017);
         this.student.submitHomework("Student1","Homework1", "Answer to homework1",
                 "Test", 2017);
-
         this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
                 "Student1", 0);
         assertTrue(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 0);
@@ -123,7 +129,6 @@ public class TestInstructor {
         this.student.registerForClass("Student1", "Test", 2017);
         this.student.submitHomework("Student1","Homework1", "Answer to homework1",
                 "Test", 2017);
-
         this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
                 "Student1", 90);
         assertTrue(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 90);
@@ -138,9 +143,60 @@ public class TestInstructor {
         this.student.registerForClass("Student1", "Test", 2017);
         this.student.submitHomework("Student1","Homework1", "Answer to homework1",
                 "Test", 2017);
-
         this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
                 "Student1", 110);
         assertTrue(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 110);
+    }
+
+    /* Cannot assign grade to not registered student */
+    @Test
+    public void testMissingAssignGrade() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student.registerForClass("Student1", "Test", 2017);
+        this.student.submitHomework("Student1","Homework1", "Answer to homework1",
+                "Test", 2017);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student5", 100);
+        assertFalse(this.instructor.getGrade("Test", 2017, "Homework1", "Student5") == 100);
+    }
+
+    /* Cannot assign grade if not current instructor */
+    @Test
+    public void testMissingAssignGrade2() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student.registerForClass("Student1", "Test", 2017);
+        this.student.submitHomework("Student1","Homework1", "Answer to homework1",
+                "Test", 2017);
+        this.instructor.assignGrade("Other Instructor", "Test", 2017, "Homework1",
+                "Student1", 100);
+        assertFalse(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 100);
+    }
+
+    /* Cannot assign grade if homework not assigned */
+    @Test
+    public void testMissingAssignGrade3() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        this.student.registerForClass("Student1", "Test", 2017);
+        this.student.submitHomework("Student1","Homework1", "Answer to homework1",
+                "Test", 2017);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student1", 100);
+        assertFalse(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 100);
+    }
+
+    /* Cannot assign grade if student did no submit homework */
+    @Test
+    public void testMissingAssignGrade4() {
+        this.admin.createClass("Test", 2017, "Instructor", 15);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student.registerForClass("Student1", "Test", 2017);
+        this.instructor.assignGrade("Instructor", "Test", 2017, "Homework1",
+                "Student1", 100);
+        assertFalse(this.instructor.getGrade("Test", 2017, "Homework1", "Student1") == 100);
     }
 }
