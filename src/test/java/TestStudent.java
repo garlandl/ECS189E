@@ -38,7 +38,6 @@ public class TestStudent {
                 "Homework1", "First homework assignment");
         this.student1.registerForClass("Student1", "Test", 2017);
         this.student2.registerForClass("Student2", "Test", 2017);
-
         assertFalse(this.student2.isRegisteredFor("Student2", "Test", 2017));
     }
 
@@ -49,7 +48,6 @@ public class TestStudent {
         this.instructor.addHomework("Instructor", "Test", 2017,
                 "Homework1", "First homework assignment");
         this.student1.registerForClass("Student1", "Test", 2017);
-
         assertTrue(this.student1.isRegisteredFor("Student1", "Test", 2017));
     }
 
@@ -78,5 +76,67 @@ public class TestStudent {
         this.student3.registerForClass("Student3", "Test", 2017);
         assertFalse(this.student2.isRegisteredFor("Student2", "Test", 2017));
         assertTrue(this.student3.isRegisteredFor("Student3", "Test", 2017));
+    }
+
+    /* Cannot register for a class that does not exist */
+    @Test
+    public void testRegisterClassExists() {
+        this.student1.registerForClass("Student1", "Test", 2017);
+        assertFalse(this.student1.isRegisteredFor("Student1", "Test", 2017));
+    }
+
+    /* Successfully drop a class */
+    @Test
+    public void testDropClass() {
+        this.admin.createClass("Test", 2017, "Instructor", 1);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student1.registerForClass("Student1", "Test", 2017);
+        this.student1.dropClass("Student1", "Test", 2017);
+        assertFalse(this.student1.isRegisteredFor("Student1", "Test", 2017));
+    }
+
+    /* Successfully submit a homework */
+    @Test
+    public void testSubmitHomework() {
+        this.admin.createClass("Test", 2017, "Instructor", 1);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student1.registerForClass("Student1", "Test", 2017);
+        this.student1.submitHomework("Student1", "Homework1", "Answer to HW1",
+                "Test", 2017);
+        assertTrue(this.student1.hasSubmitted("Student1", "Homework1", "Test", 2017));
+    }
+
+    /* Fail if homework does no exist */
+    @Test
+    public void testSubmitHomework2() {
+        this.admin.createClass("Test", 2017, "Instructor", 1);
+        this.student1.registerForClass("Student1", "Test", 2017);
+        this.student1.submitHomework("Student1", "Homework1", "Answer to HW1",
+                "Test", 2017);
+        assertFalse(this.student1.hasSubmitted("Student1", "Homework1", "Test", 2017));
+    }
+
+    /* Fail if student is not registered */
+    @Test
+    public void testSubmitHomework3() {
+        this.admin.createClass("Test", 2017, "Instructor", 1);
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student1.submitHomework("Student1", "Homework1", "Answer to HW1",
+                "Test", 2017);
+        assertFalse(this.student1.hasSubmitted("Student1", "Homework1", "Test", 2017));
+    }
+
+    /* Fail if class is not taught (this year or otherwise) */
+    @Test
+    public void testSubmitHomework4() {
+        this.instructor.addHomework("Instructor", "Test", 2017,
+                "Homework1", "First homework assignment");
+        this.student1.registerForClass("Student1", "Test", 2017);
+        this.student1.submitHomework("Student1", "Homework1", "Answer to HW1",
+                "Test", 2017);
+        assertFalse(this.student1.hasSubmitted("Student1", "Homework1", "Test", 2017));
     }
 }

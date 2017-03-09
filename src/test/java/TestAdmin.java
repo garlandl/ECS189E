@@ -103,4 +103,21 @@ public class TestAdmin {
         this.admin.changeCapacity("Test", 2017, 5);
         assertTrue(this.admin.getClassCapacity("Test", 2017) == 5);
     }
+
+    /* Unique className & year (should fail) */
+    @Test
+    public void testUniqueClassNameYear() {
+        this.admin.createClass("Test", 2017, "Instructor", 5);
+        this.admin.createClass("Test", 2017, "Instructor2", 5);
+        assertTrue(this.admin.getClassInstructor("Test", 2017).equals("Instructor"));
+    }
+
+    /* At most 2 courses per instructor (third class should not be added)*/
+    @Test
+    public void testTwoOrLess() {
+        this.admin.createClass("Test", 2017, "Instructor", 5);
+        this.admin.createClass("Test2", 2017, "Instructor", 5);
+        this.admin.createClass("Test3", 2017, "Instructor", 5);
+        assertFalse(this.admin.classExists("Test3", 2017));
+    }
 }
